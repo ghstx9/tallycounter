@@ -191,7 +191,7 @@ import "../styles/main.css";
 			}
 		}
 
-		setStoredTheme(theme) {
+		setStoredTheme(theme: string) {
 			try {
 				localStorage.setItem('theme', theme);
 			} catch {
