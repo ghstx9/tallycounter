@@ -174,7 +174,7 @@ import "../styles/main.css";
 						break;
 					case 'KeyR':
 						this.reset();
-						this.animateButton(this.resetBtn);
+						if (this.resetBtn) this.animateButton(this.resetBtn);
 						break;
 					case 'KeyT':
 						this.toggleTheme();
@@ -294,8 +294,10 @@ import "../styles/main.css";
 				const elapsed = Date.now() - this.startTime;
 				const minutes = Math.floor(elapsed / 60000);
 				const seconds = Math.floor((elapsed % 60000) / 1000);
-				this.sessionTimeEl.textContent = 
-					`${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+				if (this.sessionTimeEl) {
+					this.sessionTimeEl.textContent = 
+						`${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+				}
 			}, 1000);
 		}
 	}
