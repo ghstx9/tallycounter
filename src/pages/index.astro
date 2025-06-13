@@ -282,7 +282,7 @@ import "../styles/main.css";
 			}
 		}
 
-		animateButton(button) {
+		animateButton(button: HTMLElement) {
 			button.style.transform = 'scale(0.95)';
 			setTimeout(() => {
 				button.style.transform = '';
