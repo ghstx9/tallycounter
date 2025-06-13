@@ -269,7 +269,7 @@ import "../styles/main.css";
 				this.totalTapsEl.textContent = this.totalTaps.toLocaleString();
 			}
 			if (this.undoBtn) {
-				this.undoBtn.disabled = this.history.length === 0;
+				(this.undoBtn as HTMLButtonElement).disabled = this.history.length === 0;
 			}
 		}
 
