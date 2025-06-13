@@ -218,12 +218,12 @@ import "../styles/main.css";
 		applyTheme() {
 			if (this.isDark) {
 				document.body.classList.add('dark');
-				this.sunIcon.style.display = 'block';
-				this.moonIcon.style.display = 'none';
+				if (this.sunIcon) this.sunIcon.style.display = 'block';
+				if (this.moonIcon) this.moonIcon.style.display = 'none';
 			} else {
 				document.body.classList.remove('dark');
-				this.sunIcon.style.display = 'none';
-				this.moonIcon.style.display = 'block';
+				if (this.sunIcon) this.sunIcon.style.display = 'none';
+				if (this.moonIcon) this.moonIcon.style.display = 'block';
 			}
 		}
 
