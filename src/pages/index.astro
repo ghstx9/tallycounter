@@ -170,7 +170,7 @@ import "../styles/main.css";
 					case 'Backspace':
 						e.preventDefault();
 						this.decrement();
-						this.animateButton(this.decrementBtn);
+						if (this.decrementBtn) this.animateButton(this.decrementBtn);
 						break;
 					case 'KeyR':
 						this.reset();
