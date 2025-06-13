@@ -262,9 +262,15 @@ import "../styles/main.css";
 		}
 
 		updateDisplay() {
-			this.counterEl.textContent = this.count.toLocaleString();
-			this.totalTapsEl.textContent = this.totalTaps.toLocaleString();
-			this.undoBtn.disabled = this.history.length === 0;
+			if (this.counterEl) {
+				this.counterEl.textContent = this.count.toLocaleString();
+			}
+			if (this.totalTapsEl) {
+				this.totalTapsEl.textContent = this.totalTaps.toLocaleString();
+			}
+			if (this.undoBtn) {
+				this.undoBtn.disabled = this.history.length === 0;
+			}
 		}
 
 		animateCounter() {
