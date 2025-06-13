@@ -11,8 +11,21 @@ import "../styles/main.css";
 </head>
 
 <body class="min-h-screen bg-gradient-to-br from-gray-50 to-white flex items-center justify-center p-6">
-    <button id="themeToggle" class="theme-toggle" title="Toggle theme">
-        <span id="themeIcon">🌙</span>
+    <button id="themeToggle" class="theme-toggle" title="Toggle theme" aria-label="Toggle theme">
+        <svg id="sunIcon" class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+        <svg id="moonIcon" class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
     </button>
 
     <div class="w-full max-w-md">
@@ -75,182 +88,187 @@ import "../styles/main.css";
     </div>
 
     <script>
-        class ModernMinimalistCounter {
-            constructor() {
-                this.count = 0;
-                this.totalTaps = 0;
-                this.history = [];
-                this.startTime = Date.now();
-                this.isDark = false;
-                
-                this.counterEl = null;
-                this.totalTapsEl = null;
-                this.sessionTimeEl = null;
-                this.incrementBtn = null;
-                this.decrementBtn = null;
-                this.resetBtn = null;
-                this.undoBtn = null;
-                this.themeToggle = null;
-                this.themeIcon = null;
-                
-                this.initElements();
-                this.bindEvents();
-                this.initTheme();
-                this.startTimer();
-            }
+       class ModernMinimalistCounter {
+    	constructor() {
+			this.count = 0;
+			this.totalTaps = 0;
+			this.history = [];
+			this.startTime = Date.now();
+			this.isDark = false;
+        
+			this.counterEl = null;
+			this.totalTapsEl = null;
+			this.sessionTimeEl = null;
+			this.incrementBtn = null;
+			this.decrementBtn = null;
+			this.resetBtn = null;
+			this.undoBtn = null;
+			this.themeToggle = null;
+			this.sunIcon = null;
+			this.moonIcon = null;
+				
+			this.initElements();
+			this.bindEvents();
+			this.initTheme();
+			this.startTimer();
+    }
 
-            initElements() {
-                this.counterEl = document.getElementById('counter');
-                this.totalTapsEl = document.getElementById('totalTaps');
-                this.sessionTimeEl = document.getElementById('sessionTime');
-                this.incrementBtn = document.getElementById('incrementBtn');
-                this.decrementBtn = document.getElementById('decrementBtn');
-                this.resetBtn = document.getElementById('resetBtn');
-                this.undoBtn = document.getElementById('undoBtn');
-                this.themeToggle = document.getElementById('themeToggle');
-                this.themeIcon = document.getElementById('themeIcon');
-            }
+    	initElements() {
+			this.counterEl = document.getElementById('counter');
+			this.totalTapsEl = document.getElementById('totalTaps');
+			this.sessionTimeEl = document.getElementById('sessionTime');
+			this.incrementBtn = document.getElementById('incrementBtn');
+			this.decrementBtn = document.getElementById('decrementBtn');
+			this.resetBtn = document.getElementById('resetBtn');
+			this.undoBtn = document.getElementById('undoBtn');
+			this.themeToggle = document.getElementById('themeToggle');
+			this.sunIcon = document.getElementById('sunIcon');
+			this.moonIcon = document.getElementById('moonIcon');
+    }
 
-            bindEvents() {
-                this.incrementBtn.addEventListener('click', () => this.increment());
-                this.decrementBtn.addEventListener('click', () => this.decrement());
-                this.resetBtn.addEventListener('click', () => this.reset());
-                this.undoBtn.addEventListener('click', () => this.undo());
-                this.themeToggle.addEventListener('click', () => this.toggleTheme());
+    	bindEvents() {
+			this.incrementBtn.addEventListener('click', () => this.increment());
+			this.decrementBtn.addEventListener('click', () => this.decrement());
+			this.resetBtn.addEventListener('click', () => this.reset());
+			this.undoBtn.addEventListener('click', () => this.undo());
+			this.themeToggle.addEventListener('click', () => this.toggleTheme());
 
-                document.addEventListener('keydown', (e) => {
-                    switch(e.code) {
-                        case 'Space':
-                            e.preventDefault();
-                            this.increment();
-                            this.animateButton(this.incrementBtn);
-                            break;
-                        case 'Backspace':
-                            e.preventDefault();
-                            this.decrement();
-                            this.animateButton(this.decrementBtn);
-                            break;
-                        case 'KeyR':
-                            this.reset();
-                            this.animateButton(this.resetBtn);
-                            break;
-                        case 'KeyT':
-                            this.toggleTheme();
-                            break;
-                    }
-                });
-            }
+        	document.addEventListener('keydown', (e) => {
+            	switch(e.code) {
+					case 'Space':
+						e.preventDefault();
+						this.increment();
+						this.animateButton(this.incrementBtn);
+						break;
+					case 'Backspace':
+						e.preventDefault();
+						this.decrement();
+						this.animateButton(this.decrementBtn);
+						break;
+					case 'KeyR':
+						this.reset();
+						this.animateButton(this.resetBtn);
+						break;
+					case 'KeyT':
+						this.toggleTheme();
+						break;
+            	}
+        	});
+    	}
 
-            initTheme() {
-                const savedTheme = this.getStoredTheme();
-                if (savedTheme) {
-                    this.isDark = savedTheme === 'dark';
-                } else {
-                    this.isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-                }
-                this.applyTheme();
-            }
+    	initTheme() {
+			const savedTheme = this.getStoredTheme();
+			if (savedTheme) {
+				this.isDark = savedTheme === 'dark';
+			} else {
+				this.isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+			}
+			this.applyTheme();
+    	}
 
-            getStoredTheme() {
-                try {
-                    return localStorage.getItem('theme');
-                } catch {
-                    return null;
-                }
-            }
+    	getStoredTheme() {
+			try {
+				return localStorage.getItem('theme');
+			} catch {
+				return null;
+			}
+		}
 
-            setStoredTheme(theme) {
-                try {
-                    localStorage.setItem('theme', theme);
-                } catch {
-                    
-                }
-            }
+		setStoredTheme(theme) {
+			try {
+				localStorage.setItem('theme', theme);
+			} catch {
+				// fallback for environments without localStorage
+			}
+		}
 
-            toggleTheme() {
-                this.isDark = !this.isDark;
-                this.applyTheme();
-                this.setStoredTheme(this.isDark ? 'dark' : 'light');
-            }
+		toggleTheme() {
+			this.isDark = !this.isDark;
+			this.applyTheme();
+			this.setStoredTheme(this.isDark ? 'dark' : 'light');
+		}
 
-            applyTheme() {
-                if (this.isDark) {
-                    document.body.classList.add('dark');
-                    this.themeIcon.textContent = '☀️';
-                } else {
-                    document.body.classList.remove('dark');
-                    this.themeIcon.textContent = '🌙';
-                }
-            }
+		applyTheme() {
+			if (this.isDark) {
+				document.body.classList.add('dark');
+				this.sunIcon.style.display = 'block';
+				this.moonIcon.style.display = 'none';
+			} else {
+				document.body.classList.remove('dark');
+				this.sunIcon.style.display = 'none';
+				this.moonIcon.style.display = 'block';
+			}
+		}
 
-            increment() {
-                this.history.push(this.count);
-                this.count++;
-                this.totalTaps++;
-                this.updateDisplay();
-                this.animateCounter();
-            }
+		increment() {
+			this.history.push(this.count);
+			this.count++;
+			this.totalTaps++;
+			this.updateDisplay();
+			this.animateCounter();
+		}
 
-            decrement() {
-                if (this.count > 0) {
-                    this.history.push(this.count);
-                    this.count--;
-                    this.totalTaps++;
-                    this.updateDisplay();
-                    this.animateCounter();
-                }
-            }
+		decrement() {
+			if (this.count > 0) {
+				this.history.push(this.count);
+				this.count--;
+				this.totalTaps++;
+				this.updateDisplay();
+				this.animateCounter();
+			}
+		}
 
-            reset() {
-                if (this.count === 0) return;
-                this.history.push(this.count);
-                this.count = 0;
-                this.updateDisplay();
-                this.animateCounter();
-            }
+		reset() {
+			if (this.count === 0) return;
+			this.history.push(this.count);
+			this.count = 0;
+			this.updateDisplay();
+			this.animateCounter();
+		}
 
-            undo() {
-                if (this.history.length === 0) return;
-                this.count = this.history.pop();
-                this.totalTaps = Math.max(0, this.totalTaps - 1);
-                this.updateDisplay();
-                this.animateCounter();
-            }
+		undo() {
+			if (this.history.length === 0) return;
+			this.count = this.history.pop();
+			this.totalTaps = Math.max(0, this.totalTaps - 1);
+			this.updateDisplay();
+			this.animateCounter();
+		}
 
-            updateDisplay() {
-                this.counterEl.textContent = this.count.toLocaleString();
-                this.totalTapsEl.textContent = this.totalTaps.toLocaleString();
-                this.undoBtn.disabled = this.history.length === 0;
-            }
+		updateDisplay() {
+			this.counterEl.textContent = this.count.toLocaleString();
+			this.totalTapsEl.textContent = this.totalTaps.toLocaleString();
+			this.undoBtn.disabled = this.history.length === 0;
+		}
 
-            animateCounter() {
-                this.counterEl.classList.add('animate-gentle-bounce');
-                setTimeout(() => {
-                    this.counterEl.classList.remove('animate-gentle-bounce');
-                }, 200);
-            }
+		animateCounter() {
+			this.counterEl.classList.add('animate-gentle-bounce');
+			setTimeout(() => {
+				this.counterEl.classList.remove('animate-gentle-bounce');
+			}, 200);
+		}
 
-            animateButton(button) {
-                button.style.transform = 'scale(0.95)';
-                setTimeout(() => {
-                    button.style.transform = '';
-                }, 100);
-            }
+		animateButton(button) {
+			button.style.transform = 'scale(0.95)';
+			setTimeout(() => {
+				button.style.transform = '';
+			}, 100);
+		}
 
-            startTimer() {
-                setInterval(() => {
-                    const elapsed = Date.now() - this.startTime;
-                    const minutes = Math.floor(elapsed / 60000);
-                    const seconds = Math.floor((elapsed % 60000) / 1000);
-                    this.sessionTimeEl.textContent = 
-                        `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-                }, 1000);
-            }
-        }
+		startTimer() {
+			setInterval(() => {
+				const elapsed = Date.now() - this.startTime;
+				const minutes = Math.floor(elapsed / 60000);
+				const seconds = Math.floor((elapsed % 60000) / 1000);
+				this.sessionTimeEl.textContent = 
+					`${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+			}, 1000);
+		}
+	}
 
-        document.addEventListener('DOMContentLoaded', () => {
-            new ModernMinimalistCounter();
-        });
+// initialize the counter when the DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    new ModernMinimalistCounter();
+});
     </script>
 </body>
 </html>
