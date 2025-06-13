@@ -1,0 +1,223 @@
+---
+// src/components/counterscript.astro
+---
+
+<script>
+class ModernMinimalistCounter {
+    count;
+    totalTaps;
+    history: number[];
+    startTime;
+    isDark;
+    counterEl: HTMLElement | null;
+    totalTapsEl: HTMLElement | null;
+    sessionTimeEl: HTMLElement | null;
+    incrementBtn: HTMLElement | null;
+    decrementBtn: HTMLElement | null;
+    resetBtn: HTMLElement | null;
+    undoBtn: HTMLElement | null;
+    themeToggle: HTMLElement | null;
+    sunIcon: HTMLElement | null;
+    moonIcon: HTMLElement | null;
+
+    constructor() {
+        this.count = 0;
+        this.totalTaps = 0;
+        this.history = [];
+        this.startTime = Date.now();
+        this.isDark = false;
+    
+        this.counterEl = null;
+        this.totalTapsEl = null;
+        this.sessionTimeEl = null;
+        this.incrementBtn = null;
+        this.decrementBtn = null;
+        this.resetBtn = null;
+        this.undoBtn = null;
+        this.themeToggle = null;
+        this.sunIcon = null;
+        this.moonIcon = null;
+            
+        this.initElements();
+        this.bindEvents();
+        this.initTheme();
+        this.startTimer();
+    }
+
+    initElements() {
+        this.counterEl = document.getElementById('counter');
+        this.totalTapsEl = document.getElementById('totalTaps');
+        this.sessionTimeEl = document.getElementById('sessionTime');
+        this.incrementBtn = document.getElementById('incrementBtn');
+        this.decrementBtn = document.getElementById('decrementBtn');
+        this.resetBtn = document.getElementById('resetBtn');
+        this.undoBtn = document.getElementById('undoBtn');
+        this.themeToggle = document.getElementById('themeToggle');
+        this.sunIcon = document.getElementById('sunIcon');
+        this.moonIcon = document.getElementById('moonIcon');
+    }
+
+    bindEvents() {
+        if (this.incrementBtn) {
+            this.incrementBtn.addEventListener('click', () => this.increment());
+        }
+        if (this.decrementBtn) {
+            this.decrementBtn.addEventListener('click', () => this.decrement());
+        }
+        if (this.resetBtn) {
+            this.resetBtn.addEventListener('click', () => this.reset());
+        }
+        if (this.undoBtn) {
+            this.undoBtn.addEventListener('click', () => this.undo());
+        }
+        if (this.themeToggle) {
+            this.themeToggle.addEventListener('click', () => this.toggleTheme());
+        }
+
+        document.addEventListener('keydown', (e) => {
+            switch(e.code) {
+                case 'Space':
+                    e.preventDefault();
+                    this.increment();
+                    if (this.incrementBtn) this.animateButton(this.incrementBtn);
+                    break;
+                case 'Backspace':
+                    e.preventDefault();
+                    this.decrement();
+                    if (this.decrementBtn) this.animateButton(this.decrementBtn);
+                    break;
+                case 'KeyR':
+                    this.reset();
+                    if (this.resetBtn) this.animateButton(this.resetBtn);
+                    break;
+                case 'KeyT':
+                    this.toggleTheme();
+                    break;
+            }
+        });
+    }
+
+    initTheme() {
+        const savedTheme = this.getStoredTheme();
+        if (savedTheme) {
+            this.isDark = savedTheme === 'dark';
+        } else {
+            this.isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        }
+        this.applyTheme();
+    }
+
+    getStoredTheme() {
+        try {
+            return localStorage.getItem('theme');
+        } catch {
+            return null;
+        }
+    }
+
+    setStoredTheme(theme: string) {
+        try {
+            localStorage.setItem('theme', theme);
+        } catch {
+            // fallback for environments without localStorage
+        }
+    }
+
+    toggleTheme() {
+        this.isDark = !this.isDark;
+        this.applyTheme();
+        this.setStoredTheme(this.isDark ? 'dark' : 'light');
+    }
+
+    applyTheme() {
+        if (this.isDark) {
+            document.body.classList.add('dark');
+            if (this.sunIcon) this.sunIcon.style.display = 'block';
+            if (this.moonIcon) this.moonIcon.style.display = 'none';
+        } else {
+            document.body.classList.remove('dark');
+            if (this.sunIcon) this.sunIcon.style.display = 'none';
+            if (this.moonIcon) this.moonIcon.style.display = 'block';
+        }
+    }
+
+    increment() {
+        this.history.push(this.count);
+        this.count++;
+        this.totalTaps++;
+        this.updateDisplay();
+        this.animateCounter();
+    }
+
+    decrement() {
+        if (this.count > 0) {
+            this.history.push(this.count);
+            this.count--;
+            this.totalTaps++;
+            this.updateDisplay();
+            this.animateCounter();
+        }
+    }
+
+    reset() {
+        if (this.count === 0) return;
+        this.history.push(this.count);
+        this.count = 0;
+        this.updateDisplay();
+        this.animateCounter();
+    }
+
+    undo() {
+        if (this.history.length === 0) return;
+        this.count = this.history.pop() ?? 0;
+        this.totalTaps = Math.max(0, this.totalTaps - 1);
+        this.updateDisplay();
+        this.animateCounter();
+    }
+
+    updateDisplay() {
+        if (this.counterEl) {
+            this.counterEl.textContent = this.count.toLocaleString();
+        }
+        if (this.totalTapsEl) {
+            this.totalTapsEl.textContent = this.totalTaps.toLocaleString();
+        }
+        if (this.undoBtn) {
+            (this.undoBtn as HTMLButtonElement).disabled = this.history.length === 0;
+        }
+    }
+
+    animateCounter() {
+        if (this.counterEl) {
+            this.counterEl.classList.add('animate-gentle-bounce');
+            setTimeout(() => {
+                this.counterEl && this.counterEl.classList.remove('animate-gentle-bounce');
+            }, 200);
+        }
+    }
+
+    animateButton(button: HTMLElement) {
+        button.style.transform = 'scale(0.95)';
+        setTimeout(() => {
+            button.style.transform = '';
+        }, 100);
+    }
+
+    startTimer() {
+        setInterval(() => {
+            const elapsed = Date.now() - this.startTime;
+            const minutes = Math.floor(elapsed / 60000);
+            const seconds = Math.floor((elapsed % 60000) / 1000);
+            if (this.sessionTimeEl) {
+                this.sessionTimeEl.textContent = 
+                    `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }
+        }, 1000);
+    }
+}
+
+// Initialize the counter when the DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    new ModernMinimalistCounter();
+});
+</script>

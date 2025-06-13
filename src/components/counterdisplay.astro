@@ -1,0 +1,54 @@
+---
+// src/components/counterdisplay.astro
+---
+
+<div class="text-center mb-10">
+    <div id="counter" class="counter-text text-7xl font-light text-gray-900 mb-6 transition-all duration-300 tracking-tight">
+        0
+    </div>
+    <div class="divider w-12 h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent mx-auto transition-all duration-300"></div>
+</div>
+
+<div class="flex gap-3 mb-6">
+    <button 
+        id="decrementBtn"
+        class="btn-secondary flex-1 h-14 text-lg font-medium text-gray-700 hover:text-gray-900 bg-white hover:bg-gray-50 transition-all duration-200 rounded-xl shadow-sm hover:shadow-md border border-gray-200/60 hover:border-gray-300/60 active:scale-[0.98]"
+    >
+        −
+    </button>
+    
+    <button 
+        id="incrementBtn"
+        class="btn-primary flex-1 h-14 text-lg font-medium text-white bg-gray-900 hover:bg-gray-800 transition-all duration-200 rounded-xl shadow-sm hover:shadow-lg active:scale-[0.98]"
+    >
+        +
+    </button>
+</div>
+
+<div class="flex gap-3 mb-8">
+    <button 
+        id="undoBtn"
+        class="btn-tertiary flex-1 h-10 text-sm font-medium text-gray-600 hover:text-gray-800 bg-gray-50 hover:bg-gray-100 transition-all duration-200 rounded-lg disabled:opacity-40 disabled:cursor-not-allowed"
+        disabled
+    >
+        Undo
+    </button>
+    
+    <button 
+        id="resetBtn"
+        class="btn-tertiary flex-1 h-10 text-sm font-medium text-gray-600 hover:text-gray-800 bg-gray-50 hover:bg-gray-100 transition-all duration-200 rounded-lg"
+    >
+        Reset
+    </button>
+</div>
+
+<div class="flex justify-center gap-8 pt-4 border-t border-divider border-gray-100 transition-all duration-300">
+    <div class="text-center">
+        <div class="stat-label text-xs font-medium text-gray-400 uppercase tracking-wide mb-1 transition-colors duration-300">Total</div>
+        <div id="totalTaps" class="stat-value text-sm font-semibold text-gray-700 transition-colors duration-300">0</div>
+    </div>
+    <div class="text-center">
+        <div class="stat-label text-xs font-medium text-gray-400 uppercase tracking-wide mb-1 transition-colors duration-300">Session</div>
+        <div id="sessionTime" class="stat-value text-sm font-semibold text-gray-700 transition-colors duration-300">00:00</div>
+    </div>
+</div>
