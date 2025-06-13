@@ -274,10 +274,12 @@ import "../styles/main.css";
 		}
 
 		animateCounter() {
-			this.counterEl.classList.add('animate-gentle-bounce');
-			setTimeout(() => {
-				this.counterEl.classList.remove('animate-gentle-bounce');
-			}, 200);
+			if (this.counterEl) {
+				this.counterEl.classList.add('animate-gentle-bounce');
+				setTimeout(() => {
+					this.counterEl && this.counterEl.classList.remove('animate-gentle-bounce');
+				}, 200);
+			}
 		}
 
 		animateButton(button) {
