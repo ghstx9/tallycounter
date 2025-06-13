@@ -89,14 +89,30 @@ import "../styles/main.css";
     </div>
 
     <script>
-       class ModernMinimalistCounter {
-    	constructor() {
+	   class ModernMinimalistCounter {
+			count;
+			totalTaps;
+			history;
+			startTime;
+			isDark;
+			counterEl;
+			totalTapsEl;
+			sessionTimeEl;
+			incrementBtn;
+			decrementBtn;
+			resetBtn;
+			undoBtn;
+			themeToggle;
+			sunIcon;
+			moonIcon;
+
+		constructor() {
 			this.count = 0;
 			this.totalTaps = 0;
 			this.history = [];
 			this.startTime = Date.now();
 			this.isDark = false;
-        
+		
 			this.counterEl = null;
 			this.totalTapsEl = null;
 			this.sessionTimeEl = null;
@@ -112,7 +128,7 @@ import "../styles/main.css";
 			this.bindEvents();
 			this.initTheme();
 			this.startTimer();
-    }
+	}
 
     	initElements() {
 			this.counterEl = document.getElementById('counter');
