@@ -165,7 +165,7 @@ import "../styles/main.css";
 					case 'Space':
 						e.preventDefault();
 						this.increment();
-						this.animateButton(this.incrementBtn);
+						if (this.incrementBtn) this.animateButton(this.incrementBtn);
 						break;
 					case 'Backspace':
 						e.preventDefault();
