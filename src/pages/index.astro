@@ -255,7 +255,7 @@ import "../styles/main.css";
 
 		undo() {
 			if (this.history.length === 0) return;
-			this.count = this.history.pop();
+			this.count = this.history.pop() ?? 0;
 			this.totalTaps = Math.max(0, this.totalTaps - 1);
 			this.updateDisplay();
 			this.animateCounter();
