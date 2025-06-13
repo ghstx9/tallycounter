@@ -143,15 +143,25 @@ import "../styles/main.css";
 			this.moonIcon = document.getElementById('moonIcon');
     }
 
-    	bindEvents() {
-			this.incrementBtn.addEventListener('click', () => this.increment());
-			this.decrementBtn.addEventListener('click', () => this.decrement());
-			this.resetBtn.addEventListener('click', () => this.reset());
-			this.undoBtn.addEventListener('click', () => this.undo());
-			this.themeToggle.addEventListener('click', () => this.toggleTheme());
+		bindEvents() {
+			if (this.incrementBtn) {
+				this.incrementBtn.addEventListener('click', () => this.increment());
+			}
+			if (this.decrementBtn) {
+				this.decrementBtn.addEventListener('click', () => this.decrement());
+			}
+			if (this.resetBtn) {
+				this.resetBtn.addEventListener('click', () => this.reset());
+			}
+			if (this.undoBtn) {
+				this.undoBtn.addEventListener('click', () => this.undo());
+			}
+			if (this.themeToggle) {
+				this.themeToggle.addEventListener('click', () => this.toggleTheme());
+			}
 
-        	document.addEventListener('keydown', (e) => {
-            	switch(e.code) {
+			document.addEventListener('keydown', (e) => {
+				switch(e.code) {
 					case 'Space':
 						e.preventDefault();
 						this.increment();
@@ -169,9 +179,9 @@ import "../styles/main.css";
 					case 'KeyT':
 						this.toggleTheme();
 						break;
-            	}
-        	});
-    	}
+				}
+			});
+		}
 
     	initTheme() {
 			const savedTheme = this.getStoredTheme();
